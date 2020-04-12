@@ -111,7 +111,7 @@ function search(){
           showsweet()
       }else if(producttype === 'doughnut'){
           showdoughnut()
-      }else if(producttype === 'all'){
+      }else if(producttype === 'all' || producttype == ''){
           showall()
       }else{
           alert('dosn\'t exsist')
