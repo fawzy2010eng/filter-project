@@ -65,6 +65,11 @@ body{
 }
 .images div img{
     width: 100%;
+    transition-duration: 1s;
+    transition-timing-function: ease;
+}
+.images div img:hover{
+    transform : scale(1.2)
 }
 .images div div{
     background-color: white;
