@@ -13,6 +13,8 @@ var cakebtn = document.getElementById('cake');
 var cupcakebtn = document.getElementById('cupcake');
 var sweetbtn = document.getElementById('sweet');
 var doughnutbtn = document.getElementById('doughnut');
+var input = document.querySelector('input');
+var searchbtn = document.querySelector('i');
 
 //adding names and prices to products
 for (var i = 0; i < images.length; i++){
@@ -40,7 +42,7 @@ for (var i = 0; i < images.length; i++){
     
 };
 
-//adding eventlistener for the buttons
+//creating functions for filtering
 function showall(){
     for(var i = 0; i < firstdivs.length; i++){
         firstdivs[i].style.display = "block";
@@ -99,6 +101,23 @@ function showdoughnut(){
     doughnuts[2].className = ''
 }
 
+function search(){
+    var producttype = input.value;
+      if(producttype === 'cake'){
+          showcake();
+      }else if(producttype === 'cupcake'){
+          showcupcake()
+      }else if(producttype === 'sweet'){
+          showsweet()
+      }else if(producttype === 'doughnut'){
+          showdoughnut()
+      }else if(producttype === 'all'){
+          showall()
+      }else{
+          alert('dosn\'t exsist')
+      }
+}
+
 allbtn.addEventListener('click',showall);
 
 cupcakebtn.addEventListener('click',showcupcake);
@@ -108,3 +127,14 @@ doughnutbtn.addEventListener('click',showdoughnut);
 cakebtn.addEventListener('click',showcake);
 
 sweetbtn.addEventListener('click',showsweet);
+
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+      search()
+  }
+});
+
+
+searchbtn.addEventListener('click',function(){
+    search()
+})
