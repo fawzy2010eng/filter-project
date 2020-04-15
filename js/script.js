@@ -1,4 +1,66 @@
 'use strict'
+//////////////////////////////////////////////////
+////////////////the cart section//////////////////
+//////////////////////////////////////////////////
+var cartitem = document.querySelectorAll('.cartitem');
+var delitembtn = document.querySelectorAll('.fa-trash')
+var clearcartbtn = document.querySelector('#clearcart');
+var checkoutbtn = document.querySelector('#checkout');
+var totalprice = document.querySelector('.cacher > h3');
+var cartbtn = document.querySelector('.cart');
+//deleting item from the cart
+function delitem(){
+    var val = parseInt((this.parentElement.querySelector('h5').innerHTML).slice(0,-1));
+    
+    var current = parseInt((totalprice.innerHTML).substring(1));
+    
+    totalprice.innerHTML = '$' + (current-val);
+    
+    var item = this.parentElement;
+    item.parentElement.removeChild(item);
+}
+
+//calc the price of te whole cart
+function calcprice(){
+    var total = 0;
+    for(var i = 0; i < cartitem.length; i++){
+            
+    }
+    alert(cartitem.length)
+}
+
+//clear the cart 
+function clearcart(){
+    document.querySelector('.items').innerHTML = ''
+    totalprice.textContent = '$0'
+}
+
+//adding the event to the trash icon
+for(var i = 0; i < delitembtn.length; i++){
+    delitembtn[i].addEventListener('click',delitem)
+}
+
+//adding the event to clear the cart 
+clearcartbtn.addEventListener('click',clearcart);
+
+//showing and hiding the cart
+cartbtn.addEventListener('click',function(){
+    if((document.querySelector('div').classList).contains('on')){
+        document.querySelector('.cacher').classList = 'off cacher'
+    }else{
+        document.querySelector('.cacher').classList = 'on cacher'
+    }
+    
+})
+
+
+
+
+
+
+///////////////////////////////////////////
+///////////the filter section/////////////
+//////////////////////////////////////////
 var nameOfProduct = document.querySelectorAll('.images > div > div >h4');
 var priceOfProduct = document.querySelectorAll('.images > div > div >h5');
 //the divs of images classes
@@ -14,7 +76,8 @@ var cupcakebtn = document.getElementById('cupcake');
 var sweetbtn = document.getElementById('sweet');
 var doughnutbtn = document.getElementById('doughnut');
 var input = document.querySelector('input');
-var searchbtn = document.querySelector('i');
+var searchbtn = document.querySelector('.search > i');
+var addToCartbtn = document.querySelectorAll('.images .image i');
 
 //adding names and prices to products
 for (var i = 0; i < images.length; i++){
@@ -22,25 +85,30 @@ for (var i = 0; i < images.length; i++){
     if(name.includes('cup')){
         nameOfProduct[i].textContent = 'cupcake';
         priceOfProduct[i].textContent = '10$';
-        cupcakes.push(images[i].parentElement)
+        cupcakes.push(images[i].parentElement.parentElement)
     }
     else if(name.includes('cake')){
         nameOfProduct[i].textContent = 'cake';
         priceOfProduct[i].textContent = '12$';
-        cakes.push(images[i].parentElement)
+        cakes.push(images[i].parentElement.parentElement)
     }
     else if(name.includes('sweets')){
         nameOfProduct[i].textContent = 'sweets';
         priceOfProduct[i].textContent = '5$';
-        sweets.push(images[i].parentElement);
+        sweets.push(images[i].parentElement.parentElement);
     }
     else{
         nameOfProduct[i].textContent = 'doughnut';
         priceOfProduct[i].textContent = '20$';
-        doughnuts.push(images[i].parentElement);
+        doughnuts.push(images[i].parentElement.parentElement);
     }    
     
 };
+
+//adding to cart function to all buttons
+for(var i = 0; i < addToCartbtn.length;i++){
+    addToCartbtn[i].addEventListener('click',addtocart)
+}
 
 //creating functions for filtering
 function showall(){
@@ -118,6 +186,42 @@ function search(){
       }
 }
 
+function addtocart(){
+//    getting data from current product 
+    var name = this.parentElement.parentElement.querySelector('h4').textContent;
+    var price = this.parentElement.parentElement.querySelector('h5').textContent;
+    var imagesrc = this.parentElement.querySelector('img').getAttribute('src');
+    
+//    creating new div 
+    var item  = document.createElement('div');
+    item.className = 'cartitem';
+    item.innerHTML = `<img src=${imagesrc}>`;
+    
+    var cach = document.createElement('div');
+    cach.className = 'cash';
+    var h4 = document.createElement('h4');
+    h4.textContent = name;
+    cach.appendChild(h4);
+    var h5 = document.createElement('h5');
+    h5.textContent = price;
+    cach.appendChild(h5);
+    item.appendChild(cach);
+    
+    var icon = document.createElement('i');
+    icon.classList = "fas fa-trash";
+    item.appendChild(icon);
+    icon.addEventListener('click',delitem)
+    
+//    adding the div to the cart
+    document.querySelector('.items').appendChild(item);
+    
+    var newprice = parseInt(price.slice(0,-1));
+    
+    var current = parseInt((totalprice.textContent).substring(1));
+    
+    totalprice.textContent = '$' + (current+newprice);
+}
+
 allbtn.addEventListener('click',showall);
 
 cupcakebtn.addEventListener('click',showcupcake);
@@ -133,7 +237,6 @@ input.addEventListener("keyup", function(event) {
       search()
   }
 });
-
 
 searchbtn.addEventListener('click',function(){
     search()
